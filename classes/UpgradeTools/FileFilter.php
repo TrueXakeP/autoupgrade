@@ -144,6 +144,7 @@ class FileFilter
             '..',
             '.svn',
             '.git',
+            '.idea',
             $this->autoupgradeDir,
         );
     }
