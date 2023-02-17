@@ -152,7 +152,7 @@ class UpgradeFiles extends AbstractTask
                 $this->logger->debug($this->translator->trans('[WARNING] File %1$s has been deleted.', array($file), 'Modules.Autoupgrade.Admin'));
             }
             if (!file_exists($dest)) {
-                if (mkdir($dest)) {
+                if (@mkdir($dest, 0777, true) || is_dir($dest)) {
                     $this->logger->debug($this->translator->trans('Directory %1$s created.', array($file), 'Modules.Autoupgrade.Admin'));
 
                     return true;
@@ -181,6 +181,10 @@ class UpgradeFiles extends AbstractTask
                     array('%filename%' => $dest),
                     'Modules.Autoupgrade.Admin'
                 ));
+            }
+
+            if (!@mkdir($concurrentDirectory = dirname($dest), 0777, true) && !is_dir($concurrentDirectory)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
             }
 
             // upgrade exception were above. This part now process all files that have to be upgraded (means to modify or to remove)
