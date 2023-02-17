@@ -198,6 +198,10 @@ class Upgrader
                         if (version_compare((string) $branch->num, $this->version_num, '<')) {
                             continue;
                         }
+                        // also skip if $branch->num is too high
+                        if (version_compare((string) $branch->num, '8.0.0', '>=')) {
+                            continue;
+                        }
                         // also skip if previous loop found an available upgrade and current is not
                         if ($this->available && !($channel_available && (string) $branch['available'])) {
                             continue;

@@ -369,7 +369,9 @@ class UpgradeSelfCheck
      */
     private function checkModuleVersionIsLastest(Upgrader $upgrader)
     {
-        return version_compare($this->getModuleVersion(), $upgrader->autoupgrade_last_version, '>=');
+        // More recent module versions requires PS 1.7+
+        return version_compare($upgrader->branch, '1.7', '<') ||
+            version_compare($this->getModuleVersion(), $upgrader->autoupgrade_last_version, '>=');
     }
 
     /**
